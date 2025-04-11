@@ -5,14 +5,19 @@ import std.process;
 import std.string;
 import std.file;
 import std.exception;
+import std.path;
 
 string pathForPlugin(string pluginName) {
 	string path;
 	version(Windows) {
-		path = ["~\\AppData\\Local\\promptkit\\modules\\", pluginName].join("");
+		import std.process :environment;
+		import std.format;
+		// Screw windows
+		string winConfPath = environment.get("%appdata%");
+		confPath = format("%s\\promptkit\\modules\\%s", winConfPath, pluginName);
 	}
-	else {
-		path = ["~/.config/promptkit/modules/", pluginName].join("");
+	else version(Posix) {
+		path = expandTilde(format("~/.config/promptkit/modules/%s", pluginName));
 	}
 	return path;
 }
