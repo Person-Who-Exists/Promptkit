@@ -1,0 +1,15 @@
+{
+	"authors": [
+		"PersonWhoExists"
+	],
+	"copyright": "Copyright © 2025, PersonWhoExists",
+	"dependencies": {},
+	"description": "A d based terminal prompt system based around modularity",
+	"license": "GPL-3.0-or-later",
+	"name": "promptkit",
+	"sourceFiles": [
+		"source/main.d"
+	],
+	"targetType": "executable",
+	"version": "0.0.1"
+}
