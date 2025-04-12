@@ -6,7 +6,6 @@ import std.conv;
 import std.file;
 import std.path;
 import std.json;
-import std.typecons: tuple;
 
 struct Plugin {
 	string name;
