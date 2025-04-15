@@ -4,8 +4,12 @@ import std.stdio;
 import std.string;
 import std.conv;
 import std.process;
+import std.format;
+import std.path;
+import std.file;
 
 string helpText = "Add help text here or make help generation with argparse";
+string[string] initFiles;
 
 void main(string[] args) {
 	switch(args[1]) {
@@ -14,7 +18,8 @@ void main(string[] args) {
 			break;
 		}
 		case "init": {
-			// Run the init script here
+			string thisBin = absolutePath(thisExePath());
+			writeln(spawnProcess([thisBin, "background", environment["PROMPTKIT_SOCKET"]]));
 			break;
 		}
 		case "background": {
