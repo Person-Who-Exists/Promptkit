@@ -9,13 +9,13 @@ import std.exception;
 import std.file;
 
 // Creates a Unix domain socket.
-Socket createUnixDomainSocket(string pathname) {
+Socket createUDS(string pathname) {
 	Socket socket = new Socket(AddressFamily.UNIX, SocketType.STREAM);
 	try {
 		socket.bind(new UnixAddress(pathname));
 	}
-	catch (Exception e) {
-		stderr.writef("Socket bind failed: %s\n", e.msg);
+	catch (Exception error) {
+		stderr.writef("Socket bind failed: %s\n", error.msg);
 		socket.close();
 		return null;
 	}
@@ -23,36 +23,36 @@ Socket createUnixDomainSocket(string pathname) {
 }
 
 // Connects to a Unix domain socket.
-bool connectToUnixDomainSocket(Socket socket, string pathname) {
+bool connectToUDS(Socket socket, string pathname) {
 	try {
 		socket.connect(new UnixAddress(pathname));
 	}
-	catch (Exception e) {
-		stderr.writef("Socket connect failed: %s\n", e.msg);
+	catch (Exception error) {
+		stderr.writef("Socket connect failed: %s\n", error.msg);
 		return false;
 	}
 	return true;
 }
 
 // Listens for connections on a Unix domain socket.
-bool listenOnUnixDomainSocket(Socket socket, int backlog) {
+bool listenOnUDS(Socket socket, int backlog) {
 	try {
 		socket.listen(backlog);
 	}
-	catch (Exception e) {
-		stderr.writef("Socket listen failed: %s\n", e.msg);
+	catch (Exception error) {
+		stderr.writef("Socket listen failed: %s\n", error.msg);
 		return false;
 	}
 	return true;
 }
 
 // Accepts a connection on a Unix domain socket.
-Socket acceptUnixDomainSocketConnection(Socket socket) {
+Socket acceptUDSConnection(Socket socket) {
 	try {
 		return socket.accept();
 	}
-	catch (Exception e) {
-		stderr.writef("Socket accept failed: %s\n", e.msg);
+	catch (Exception error) {
+		stderr.writef("Socket accept failed: %s\n", error.msg);
 		return null;
 	}
 }
@@ -62,8 +62,8 @@ ssize_t sendData(Socket socket, const(ubyte)[] data) {
 	try {
 		return socket.send(data);
 	}
-	catch (Exception e) {
-		stderr.writef("Socket send failed: %s\n", e.msg);
+	catch (Exception error) {
+		stderr.writef("Socket send failed: %s\n", error.msg);
 		return -1;
 	}
 }
@@ -73,14 +73,14 @@ ssize_t receiveData(Socket socket, ubyte[] buffer) {
 	try {
 		return socket.receive(buffer);
 	}
-	catch (Exception e) {
-		stderr.writef("Socket receive failed: %s\n", e.msg);
+	catch (Exception error) {
+		stderr.writef("Socket receive failed: %s\n", error.msg);
 		return -1;
 	}
 }
 
 // Closes a Unix domain socket.  Also unlinks the path.
-int closeUnixDomainSocket(Socket socket, string pathname) {
+int closeUDS(Socket socket, string pathname) {
 	socket.close();
 	try {
 		// Only unlink if a pathname was provided and the unlinking succeeds.
@@ -88,8 +88,8 @@ int closeUnixDomainSocket(Socket socket, string pathname) {
 			remove(pathname); // Use std.file.remove
 		}
 	}
-	catch (Exception e) {
-		stderr.writef("Unlink failed: %s\n", e.msg);
+	catch (Exception error) {
+		stderr.writef("Unlink failed: %s\n", error.msg);
 		return -1;
 	}
 	return 0;
@@ -100,8 +100,8 @@ bool setSocketNonBlocking(Socket socket) {
 	try {
 		socket.blocking = false;
 	}
-	catch (Exception e) {
-		stderr.writef("Set non-blocking failed: %s\n", e.msg);
+	catch (Exception error) {
+		stderr.writef("Set non-blocking failed: %s\n", error.msg);
 		return false;
 	}
 	return true;

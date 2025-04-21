@@ -18,13 +18,9 @@ void main(string[] args) {
 			break;
 		}
 		case "init": {
-			string thisBin = absolutePath(thisExePath());
-			writeln(spawnProcess([thisBin, "background", environment["PROMPTKIT_SOCKET"]]));
-			break;
-		}
-		case "background": {
 			import promptkit.background;
 			import promptkit.ipc;
+			background();
 			break;
 		}
 		case "reload": {
@@ -32,6 +28,10 @@ void main(string[] args) {
 			break;
 		}
 		case "generate": {
+			import promptkit.ipc;
+			break;
+		}
+		case "exit": {
 			import promptkit.ipc;
 			break;
 		}
