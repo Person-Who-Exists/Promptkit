@@ -1,48 +1,56 @@
 module promptkit.conf;
 
-import std.stdio;
+import std.stdio : writeln;
 import std.string;
-import std.conv;
+import std.conv : to;
 import std.file;
-import std.path;
+import std.path : expandTilde;
 import std.json;
 
-struct Plugin {
+struct Plugin
+{
 	string name;
 	string source;
 	string head;
 }
 
-struct PromptComponent {
+struct PromptComponent
+{
 	string id;
 	JSONValue config;
 	bool constant;
 }
 
-struct ConfData {
+struct ConfData
+{
 	Plugin[] pluginList;
 	PromptComponent[] prompt;
 	JSONValue settings;
 }
 
-ConfData parseConf() {
+ConfData parseConf()
+{
 	Plugin[] pluginList;
 	PromptComponent[] prompt;
 	string confPath;
 
 	// Blame windows for the next 9 lines
-	version(Windows) {
-		import std.process :environment;
+	version (Windows)
+	{
+		import std.process : environment;
 		import std.format;
+
 		// Screw windows
 		string winConfPath = environment.get("%appdata%");
 		confPath = format("%s\\promptkit\\config.json", winConfPath);
 	}
-	else version(Posix) {
+	else version (Posix)
+	{
 		confPath = expandTilde("~/.config/promptkit/config.json");
 	}
 
-	if (!(exists(confPath) && isFile(confPath))) {
+	if (!(exists(confPath) && isFile(confPath)))
+	{
 		throw new Exception("Please create a conf file at ", confPath);
 	}
 
@@ -51,9 +59,11 @@ ConfData parseConf() {
 	JSONValue jsonConfig = parseJSON(JSONStr);
 
 	// Populate pluginList with plugin data
-	foreach(JSONValue plugin; jsonConfig["plugins"].array) {
+	foreach (JSONValue plugin; jsonConfig["plugins"].array)
+	{
 		string[string] pluginArrMap;
-		foreach(string key; plugin.object.keys) {
+		foreach (string key; plugin.object.keys)
+		{
 			string value = plugin.object[key].str();
 			pluginArrMap[key] = value;
 		}
@@ -67,9 +77,11 @@ ConfData parseConf() {
 	}
 
 	// Populate the prompt with prompt components
-	foreach(JSONValue plugin; jsonConfig["prompt"].array) {
+	foreach (JSONValue plugin; jsonConfig["prompt"].array)
+	{
 		string[string] prompComponentArrMap;
-		foreach(string key; plugin.object.keys) {
+		foreach (string key; plugin.object.keys)
+		{
 			string value = plugin.object[key].str();
 			prompComponentArrMap[key] = value;
 		}

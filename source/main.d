@@ -1,9 +1,9 @@
 module promptkit.main;
 
-import std.stdio;
+import std.stdio : writeln;
 import std.string;
-import std.conv;
-import std.process;
+import std.conv : to;
+import std.process : spawnProcess, environment;
 import std.format;
 import std.path;
 import std.file;
@@ -11,31 +11,42 @@ import std.file;
 string helpText = "Add help text here or make help generation with argparse";
 string[string] initFiles;
 
-void main(string[] args) {
-	switch(args[1]) {
-		case "help": {
+void main(string[] args)
+{
+	switch (args[1])
+	{
+	case "help":
+		{
 			writeln(helpText);
 			break;
 		}
-		case "init": {
+	case "init":
+		{
 			import promptkit.background;
-			import promptkit.ipc;
+
 			background();
-			break;
+			return;
 		}
-		case "reload": {
+	case "reload":
+		{
 			import promptkit.ipc;
+
 			break;
 		}
-		case "generate": {
+	case "generate":
+		{
 			import promptkit.ipc;
+
 			break;
 		}
-		case "exit": {
+	case "exit":
+		{
 			import promptkit.ipc;
+
 			break;
 		}
-		default: {
+	default:
+		{
 			writeln(helpText);
 			break;
 		}
