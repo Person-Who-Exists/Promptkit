@@ -15,7 +15,7 @@ void background()
 	ubyte[1024] buffer;
 	string socketPath;
 
-	ConfData config = parseConf();
+	//ConfData config = parseConf();
 	try
 	{
 		socketPath = format("/tmp/promptkit-%s", environment["PROMPTKIT_SOCKET"]);
@@ -32,6 +32,22 @@ void background()
 	while (loop)
 	{
 		socket.receive(buffer);
+		string command = to!string(buffer);
+		switch (command)
+		{
+			case "generate": {
+				break;
+			}
+			case "reload": {
+				break;
+			}
+			case "exit": {
+				break;
+			}
+			default: {
+				break;
+			}
+		}
 	}
 }
 
