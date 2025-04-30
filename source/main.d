@@ -9,7 +9,6 @@ import std.path;
 import std.file;
 
 string helpText = "Add help text here or make help generation with argparse";
-string[string] initFiles;
 
 void main(string[] args)
 {

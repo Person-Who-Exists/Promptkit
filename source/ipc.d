@@ -46,7 +46,6 @@ void udsDestroy(string path)
 	catch (Exception error)
 	{
 		throw new Error("Could not destroy socket because ", error);
-		writeln("Could not destroy socket");
 		return;
 	}
 }

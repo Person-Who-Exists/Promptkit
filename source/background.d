@@ -5,6 +5,8 @@ import std.string;
 import std.process : environment;
 import std.conv : to;
 import std.socket : Socket;
+import std.concurrency;
+import core.thread;
 import promptkit.ipc;
 import promptkit.conf;
 import promptkit.plugin_manager;
@@ -42,7 +44,7 @@ void background()
 				break;
 			}
 			case "exit": {
-				break;
+				return;
 			}
 			default: {
 				break;
